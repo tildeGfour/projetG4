@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre site web</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Analyse Morphosyntaxique avec Spacy GROUPE 4</h1>
+    <form action="/analyse" method="post">
+        <textarea name="texte" placeholder="Entrez votre texte ici"></textarea>
+        <input type="submit" value="Analyser">
+    </form>
+  <!-- Code HTML existant -->
+
+<h2>Résultat de l'analyse</h2>
+<div id="resultat">
+    {% if dep_html %}
+    {{ dep_html | safe }}
+    {% else %}
+    <p>Le résultat de l'analyse sera affiché ici.</p>
+    {% endif %}
+</div>
+
+<h3>Informations Morphosyntaxiques</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Mot</th>
+            <th>POS</th>
+            <th>Tag</th>
+            <th>Dépendance</th>
+            <th>Lemme</th>
+            <th>Genre/Nombre/Infinitif</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if token_info %}
+        {% for token in token_info %}
+        <tr>
+            <td>{{ token[0] }}</td>
+            <td>{{ token[1] }}</td>
+            <td>{{ token[2] }}</td>
+            <td>{{ token[3] }}</td>
+            <td>{{ token[4] }}</td>
+            <td>{{ token[5] }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="6">Aucune information morphosyntaxique disponible.</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<h4>Traduction</h4>
+<form action="/traduire" method="post">
+    <textarea name="texte" placeholder="Entrez votre texte ici"></textarea>
+    <select id="direction" name="direction" aria-label="Choisir la direction de la traduction">   
+        <option value="fr-en">Français vers Anglais</option>
+        <option value="en-fr">Anglais vers Français</option>
+    </select>
+    <input type="submit" value="Traduire" id="traduire">
+</form>
+<div id="resultatTraduction"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
